@@ -1,9 +1,14 @@
-# Webpack4
-
-Webpack Startup configuration for verson 4.x.x.
-
-Tested versoins:
-
+{
+    "name": "reactdev",
+    "version": "1.0.0",
+    "description": "Webpack4 React Development",
+    "main": "webpack.config.js",
+    "scripts": {
+        "start": "webpack-dev-server --open --hot --mode development",
+        "build": "webpack --mode production"
+    },
+    "license": "ISC",
+    "author": "",
     "devDependencies": {
         "@babel/core": "^7.4.0",
         "@babel/preset-env": "^7.4.2",
@@ -19,3 +24,5 @@ Tested versoins:
         "webpack-cli": "^3.3.0",
         "webpack-dev-server": "^3.2.1"
     },
+    "dependencies": {}
+}
