@@ -9,7 +9,6 @@ module.exports = {
     output: {
 	path: path.join(__dirname, '/output'),
 	filename: 'bundle.js',
-	publicPath: '/'
     },
 
     module: {
@@ -27,6 +26,12 @@ module.exports = {
 		{
 		    loader: "html-loader"
 		}
+		]
+	    },
+	    {
+		test: /\.(png|svg|jpg|gif)$/,
+		use: [
+		    "file-loader"
 		]
 	    },
 	    {
