@@ -2,12 +2,56 @@ import * as _ from 'underscore';
 import { View, Application } from 'backbone.marionette';
 import './coreui/dist/css/coreui.min.css';
 
+import { Calendar } from '@fullcalendar/core';
+import interactionPlugin from '@fullcalendar/interaction';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import listPlugin from '@fullcalendar/list';
+
+var calendarView = null;
 
 // Create three views to simulate the main pages
-const MyViewHome = View.extend({
-  tagName: 'div',
-  template: _.template('Backbone.Marionette v4.1.2 Testing')
+const MyViewCalendar = View.extend({
+    el: '#task-calendar',
+    tagName: 'div',
+    template: _.template('Calendar View'),
+    initialize: function(options) {
+	this.render();
+    },
+    render: function() {
+
+	var calendar = new Calendar(this.el, {
+	    plugins: [ interactionPlugin, dayGridPlugin, timeGridPlugin, listPlugin ],
+	    headerToolbar: {
+		left: 'prev,next today',
+		center: 'title',
+		right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+		},
+	    navLinks: true, // can click day/week names to navigate views
+	    editable: true,
+	    dayMaxEvents: true,
+	    events: [
+	    {
+		id: 999,
+		title: 'Repeating Event',
+		start: '2020-10-09T16:00:00'
+	    },
+	    {
+		id: 999,
+		title: 'Repeating Event',
+		start: '2020-10-16T16:00:00'
+	    },
+	    {
+		title: 'Conference',
+		start: '2020-10-11',
+		end: '2020-10-12'
+	    },
+	    ]
+	});
+	calendar.render();
+    }
 });
+
 
 const MyViewContact = View.extend({
   tagName: 'div',
@@ -15,7 +59,7 @@ const MyViewContact = View.extend({
 
     <div class="card">
 	<div class="card-header"><i class="fa fa-align-justify">
-	    </i><b>Contact Information</b></i>
+	    </i><b>Task List View</b></i>
 	    <div class="card-header-actions">
 		<a id="Contactform_create" class="card-header-action" href="#">Add</a>
 	    </div>
@@ -65,10 +109,9 @@ const MyViewAbout = View.extend({
     <div class="card-header"><b>About Backbone.Marionette</b></div>
     <div class="card-body">
 
-	<p>This application covers the basic usage patterns and concepts of Marionette. This covers the usage of collection view.
-	A CollectionView like View manages a portion of the DOM via a single parent DOM element or el. This view manages an ordered set of child views that are shown within the view's el. These children are most often created to match the models of a Backbone.Collection though a CollectionView does not require a collection and can manage any set of views.</p>
+	<p>This a simple to-do-list applicaton built to show how to use Marionette API and integrate with fullCalendar package.
 
-    <div class="card-footer"><b>ver 4.1.2</b></div>
+    <div class="card-footer"><b>backbone.marionette ver 4.1.2</b></div>
     </div>
     `)
 });
@@ -89,20 +132,32 @@ var Router = Backbone.Router.extend({
 
   routes: {
     '': 'HomePage',
+    'calendar': 'CalendarPage',
     'contact': 'ContactPage',
     'about': 'AboutPage'
   },
 
   HomePage() {
-    MyApp.showView(new MyViewHome());    // showView to display view
+    console.log("home page");
+    calendarView = new MyViewCalendar();
+    calendarVIew.render();
+    //MyApp.showView(new MyViewHome());
+  },
+
+  CalendarPage() {
+    console.log("calendar page");
+    //MyApp.showView(new MyViewCalendar());
+    calendarView.render();
   },
 
   ContactPage() {
-    MyApp.showView(new MyViewContact()); // showView to display view
+    console.log("caontact page");
+    MyApp.showView(new MyViewContact());
   },
 
   AboutPage() {
-    MyApp.showView(new MyViewAbout());   // showView to display view
+    console.log("about page");
+    MyApp.showView(new MyViewAbout());
   }
 
 });
